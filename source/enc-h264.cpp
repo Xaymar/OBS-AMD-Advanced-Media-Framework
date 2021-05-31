@@ -1489,6 +1489,7 @@ bool Plugin::Interface::H264Interface::update(obs_data_t* data)
 			idrperiod          = static_cast<uint32_t>(ceil((keyinterv * framerate)));
 		}
 		m_VideoEncoder->SetIDRPeriod(idrperiod);
+		m_VideoEncoder->SetHeaderInsertionSpacing(idrperiod);
 	}
 	/// I/P/Skip Frame Interval/Period
 	{
@@ -1556,14 +1557,13 @@ bool Plugin::Interface::H264Interface::update(obs_data_t* data)
 		uint32_t fpsNum = m_VideoEncoder->GetFrameRate().first;
 		uint32_t fpsDen = m_VideoEncoder->GetFrameRate().second;
 		if (obs_data_get_int(data, "keyint_sec") > 0) {
-			m_VideoEncoder->SetIDRPeriod(
-				static_cast<uint32_t>(obs_data_get_int(data, "keyint_sec")
-									  * (static_cast<double_t>(fpsNum) / static_cast<double_t>(fpsDen))));
+			uint32_t idrperiod = static_cast<uint32_t>(obs_data_get_int(data, "keyint_sec")
+									  * (static_cast<double_t>(fpsNum) / static_cast<double_t>(fpsDen)));
+			m_VideoEncoder->SetIDRPeriod(idrperiod);
+			m_VideoEncoder->SetHeaderInsertionSpacing(idrperiod);
 
+			obs_data_set_int(data, P_PERIOD_IDR_H264, idrperiod);
 			obs_data_set_double(data, P_INTERVAL_KEYFRAME, static_cast<double_t>(obs_data_get_int(data, "keyint_sec")));
-			obs_data_set_int(data, P_PERIOD_IDR_H264,
-							 static_cast<uint32_t>(obs_data_get_int(data, "keyint_sec")
-												   * (static_cast<double_t>(fpsNum) / static_cast<double_t>(fpsDen))));
 			obs_data_unset_user_value(data, "keyint_sec");
 		}
 	}
