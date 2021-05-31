@@ -35,7 +35,6 @@ Plugin::AMD::Encoder::Encoder(Codec codec, std::shared_ptr<API::IAPI> videoAPI, 
 {
 	m_UniqueId = Utility::GetUniqueIdentifier();
 
-#pragma region Null Values
 	/// AMF Internals
 	m_AMF              = nullptr;
 	m_AMFFactory       = nullptr;
@@ -89,7 +88,6 @@ Plugin::AMD::Encoder::Encoder(Codec codec, std::shared_ptr<API::IAPI> videoAPI, 
 	m_MultiThreading = multiThreading;
 	m_AsyncRetrieve  = nullptr;
 	m_AsyncSend      = nullptr;
-#pragma endregion Null Values
 
 	// Setup
 	m_Codec            = codec;

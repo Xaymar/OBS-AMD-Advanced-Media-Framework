@@ -23,8 +23,6 @@
 using namespace Plugin;
 using namespace Plugin::AMD;
 
-#pragma region Singleton
-
 static CapabilityManager* __instance;
 static std::mutex         __instance_mutex;
 void                      Plugin::AMD::CapabilityManager::Initialize()
@@ -47,7 +45,6 @@ void Plugin::AMD::CapabilityManager::Finalize()
 		delete __instance;
 	__instance = nullptr;
 }
-#pragma endregion Singleton
 
 Plugin::AMD::CapabilityManager::CapabilityManager()
 {

@@ -1,0 +1,66 @@
+name: Build
+
+on: 
+  push:
+    tags:
+      - '*'
+    branches-ignore:
+      - 'l10n_master'
+  pull_request:
+    branches:
+      - '*'
+
+jobs:
+  windows:
+    name: "Windows 64-bit"
+    strategy:
+      matrix: 
+        runner: [ windows-2019 ]
+        include:
+          - runner: windows-2019
+            id: windows2019
+            windows_sdk: "10.0.18362.0"
+            cmake_generator: "Visual Studio 16 2019"
+            cmake_generator_platform: "x64"
+    runs-on: ${{ matrix.runner }}
+    env:
+      CMAKE_GENERATOR: ${{ matrix.cmake_generator }}
+      CMAKE_GENERATOR_PLATFORM: ${{ matrix.cmake_generator_platform }}
+      CMAKE_GENERATOR_TOOLSET: "host=x64"
+      CMAKE_SYSTEM_VERSION: ${{ matrix.windows_sdk }}
+    steps:
+    - name: "Clone Repository"
+      uses: actions/checkout@v1
+    - name: "Clone Submodules"
+      shell: bash
+      run: git submodule update --init --recursive
+    - name: "Cache: Prerequisites"
+      uses: actions/cache@v2
+      with:
+        path: |
+          build/temp/obsdeps-download/obsdeps-download-prefix/src/obsdeps.7z
+          build/temp/libobs-download/libobs-download-prefix/src/libobs.7z
+        key: ${{ matrix.id }}
+    - name: "Configure Project"
+      shell: bash
+      run: |
+        cmake -H. -B"build/temp" \
+          -DCMAKE_INSTALL_PREFIX="${PWD}/build/distrib" \
+          -DCMAKE_BUILD_TYPE=RelWithDebInfo \
+          -DCPACK_GENERATOR="7Z;ZIP;TGZ" \
+          -DCPACK_SOURCE_GENERATOR=OFF \
+          -DCPACK_OUTPUT_FILE_PREFIX="${PWD}/build/package" \
+          -DCPACK_SYSTEM_NAME="windows"
+    - name: "Build Project"
+      shell: bash
+      run: |
+        cmake --build "build/temp" --config RelWithDebInfo --target INSTALL
+    - name: "Package Project"
+      shell: bash
+      run: |
+        cmake --build "build/temp" --config RelWithDebInfo --target PACKAGE
+    - name: "Upload Artifacts"
+      uses: actions/upload-artifact@v1
+      with:
+        name: ${{ matrix.id }}
+        path: build/package

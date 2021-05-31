@@ -35,7 +35,6 @@ extern "C" {
 namespace Plugin {
 	namespace AMD {
 		class AMF {
-#pragma region Singleton
 			public:
 			static void Initialize();
 			static AMF* Instance();
@@ -48,7 +47,6 @@ namespace Plugin {
 			public: // Remove all Copy operators
 			AMF(AMF const&) = delete;
 			void operator=(AMF const&) = delete;
-#pragma endregion Singleton
 
 			public:
 			amf::AMFFactory* GetFactory();

@@ -175,7 +175,6 @@ namespace Plugin {
 			virtual ~Encoder();
 
 			public:
-#pragma region Initialization
 			uint64_t GetUniqueId();
 
 			//void SetCodec(Codec v);
@@ -208,10 +207,7 @@ namespace Plugin {
 			void SetDebug(bool v);
 			bool IsDebug();
 
-//bool Initialize();
-#pragma endregion Initialization
-
-#pragma region Settings
+			//bool Initialize();
 			virtual std::vector<Usage> CapsUsage()       = 0;
 			virtual void               SetUsage(Usage v) = 0;
 			virtual Usage              GetUsage()        = 0;
@@ -221,7 +217,6 @@ namespace Plugin {
 			virtual QualityPreset              GetQualityPreset()                = 0;
 
 #ifndef LITE_OBS
-#pragma region Frame
 			virtual std::pair<std::pair<uint32_t, uint32_t>, std::pair<uint32_t, uint32_t>> CapsResolution() = 0;
 			virtual void                          SetResolution(std::pair<uint32_t, uint32_t> v)             = 0;
 			virtual std::pair<uint32_t, uint32_t> GetResolution()                                            = 0;
@@ -231,9 +226,7 @@ namespace Plugin {
 
 			virtual void                          SetFrameRate(std::pair<uint32_t, uint32_t> v) = 0;
 			virtual std::pair<uint32_t, uint32_t> GetFrameRate()                                = 0;
-#pragma endregion Frame
 
-#pragma region Profile
 			virtual std::vector<Profile> CapsProfile()         = 0;
 			virtual void                 SetProfile(Profile v) = 0;
 			virtual Profile              GetProfile()          = 0;
@@ -243,13 +236,11 @@ namespace Plugin {
 			virtual void                      SetProfileLevel(ProfileLevel v, std::pair<uint32_t, uint32_t> r,
 															  std::pair<uint32_t, uint32_t> h) = 0;
 			virtual ProfileLevel              GetProfileLevel()                                = 0;
-#pragma endregion Profile
 
 			virtual std::vector<CodingType> CapsCodingType()            = 0;
 			virtual void                    SetCodingType(CodingType v) = 0;
 			virtual CodingType              GetCodingType()             = 0;
 
-#pragma region Reference Frames
 			virtual std::pair<uint64_t, uint64_t> CapsMaximumReferenceFrames()          = 0;
 			virtual void                          SetMaximumReferenceFrames(uint64_t v) = 0;
 			virtual uint64_t                      GetMaximumReferenceFrames()           = 0;
@@ -257,7 +248,6 @@ namespace Plugin {
 			virtual std::pair<uint32_t, uint32_t> CapsMaximumLongTermReferenceFrames()          = 0;
 			virtual void                          SetMaximumLongTermReferenceFrames(uint32_t v) = 0;
 			virtual uint32_t                      GetMaximumLongTermReferenceFrames()           = 0;
-#pragma endregion Reference Frames
 
 			virtual std::vector<RateControlMethod> CapsRateControlMethod()                   = 0;
 			virtual void                           SetRateControlMethod(RateControlMethod v) = 0;
@@ -306,7 +296,6 @@ namespace Plugin {
 			virtual void     SetMaximumAccessUnitSize(uint32_t v) = 0;
 			virtual uint32_t GetMaximumAccessUnitSize()           = 0;
 
-#pragma region Video Buffering Verifier
 			virtual std::pair<uint64_t, uint64_t> CapsVBVBufferSize()          = 0;
 			virtual void                          SetVBVBufferSize(uint64_t v) = 0;
 			void                                  SetVBVBufferStrictness(double_t v);
@@ -314,9 +303,7 @@ namespace Plugin {
 
 			virtual void  SetVBVBufferInitialFullness(double v) = 0;
 			virtual float GetInitialVBVBufferFullness()         = 0;
-#pragma endregion Video Buffering Verifier
 
-#pragma region Picture Control
 			virtual void     SetIDRPeriod(uint32_t v) = 0;
 			virtual uint32_t GetIDRPeriod()           = 0;
 
@@ -334,18 +321,13 @@ namespace Plugin {
 
 			virtual void SetDeblockingFilterEnabled(bool v) = 0;
 			virtual bool IsDeblockingFilterEnabled()        = 0;
-#pragma endregion Picture Control
 
-#pragma region Motion Estimation
 			virtual void SetMotionEstimationQuarterPixelEnabled(bool v) = 0;
 			virtual bool IsMotionEstimationQuarterPixelEnabled()        = 0;
 
 			virtual void SetMotionEstimationHalfPixelEnabled(bool v) = 0;
 			virtual bool IsMotionEstimationHalfPixelEnabled()        = 0;
-#pragma endregion Motion Estimation
-#pragma endregion        Settings
 
-#pragma region Control
 			void Start();
 			void Restart();
 			void Stop();
@@ -356,7 +338,6 @@ namespace Plugin {
 			bool Encode(struct encoder_frame* f, struct encoder_packet* p, bool* b);
 			void GetVideoInfo(struct video_scale_info* info);
 			bool GetExtraData(uint8_t** extra_data, size_t* size);
-#pragma endregion Control
 
 			protected:
 			void UpdateFrameRateValues();

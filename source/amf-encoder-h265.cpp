@@ -1446,7 +1446,7 @@ std::string Plugin::AMD::EncoderH265::HandleTypeOverride(amf::AMFSurfacePtr& d, 
 void Plugin::AMD::EncoderH265::LogProperties()
 {
 	PLOG_INFO(PREFIX "Encoder Parameters:", m_UniqueId);
-#pragma region Backend
+
 	PLOG_INFO(PREFIX "  Backend:", m_UniqueId);
 	PLOG_INFO(PREFIX "    Video API: %s", m_UniqueId, m_API->GetName().c_str());
 	PLOG_INFO(PREFIX "    Video Adapter: %s", m_UniqueId, m_APIAdapter.Name.c_str());
@@ -1455,34 +1455,31 @@ void Plugin::AMD::EncoderH265::LogProperties()
 	PLOG_INFO(PREFIX "      Conversion: %s", m_UniqueId, m_OpenCLConversion ? "Enabled" : "Disabled");
 	PLOG_INFO(PREFIX "    Multi-Threading: %s", m_UniqueId, m_MultiThreading ? "Enabled" : "Disabled");
 	PLOG_INFO(PREFIX "    Queue Size: %" PRIu32, m_UniqueId, (uint32_t)GetQueueSize());
-#pragma endregion Backend
-#pragma region    Frame
-    PLOG_INFO(PREFIX "  Frame:", m_UniqueId);
-    PLOG_INFO(PREFIX "    Format: %s %s %s", m_UniqueId, Utility::ColorFormatToString(m_ColorFormat),
-              Utility::ColorSpaceToString(m_ColorSpace), m_FullColorRange ? "Full" : "Partial");
-    PLOG_INFO(PREFIX "    Resolution: %" PRIu32 "x%" PRIu32, m_UniqueId, m_Resolution.first, m_Resolution.second);
-    PLOG_INFO(PREFIX "    Frame Rate: %" PRIu32 "/%" PRIu32, m_UniqueId, m_FrameRate.first, m_FrameRate.second);
-    auto aspectRatio = GetAspectRatio();
-    PLOG_INFO(PREFIX "    Aspect Ratio: %" PRIu32 ":%" PRIu32, m_UniqueId, aspectRatio.first, aspectRatio.second);
-#pragma endregion Frame
-#pragma region    Static
-    PLOG_INFO(PREFIX "  Static:", m_UniqueId);
-    PLOG_INFO(PREFIX "    Usage: %s", m_UniqueId, Utility::UsageToString(GetUsage()));
-    PLOG_INFO(PREFIX "    Quality Preset: %s", m_UniqueId, Utility::QualityPresetToString(GetQualityPreset()));
-    auto profileLevel = static_cast<uint16_t>(GetProfileLevel());
-    PLOG_INFO(PREFIX "    Profile: %s %" PRIu16 ".%" PRIu16, m_UniqueId, Utility::ProfileToString(GetProfile()),
-              profileLevel / 10, profileLevel % 10);
-    PLOG_INFO(PREFIX "    Tier: %s", m_UniqueId, Utility::TierToString(GetTier()));
-    PLOG_INFO(PREFIX "    Coding Type: %s", m_UniqueId, Utility::CodingTypeToString(GetCodingType()));
-    PLOG_INFO(PREFIX "    Max. Reference Frames: %" PRIu16, m_UniqueId, (uint16_t)GetMaximumReferenceFrames());
-    PLOG_INFO(PREFIX "    Max. Long-Term Reference Frames: %" PRIu16, m_UniqueId,
-              (uint16_t)GetMaximumLongTermReferenceFrames());
-#pragma endregion Static
-#pragma region Rate Control
+
+	PLOG_INFO(PREFIX "  Frame:", m_UniqueId);
+	PLOG_INFO(PREFIX "    Format: %s %s %s", m_UniqueId, Utility::ColorFormatToString(m_ColorFormat),
+			  Utility::ColorSpaceToString(m_ColorSpace), m_FullColorRange ? "Full" : "Partial");
+	PLOG_INFO(PREFIX "    Resolution: %" PRIu32 "x%" PRIu32, m_UniqueId, m_Resolution.first, m_Resolution.second);
+	PLOG_INFO(PREFIX "    Frame Rate: %" PRIu32 "/%" PRIu32, m_UniqueId, m_FrameRate.first, m_FrameRate.second);
+	auto aspectRatio = GetAspectRatio();
+	PLOG_INFO(PREFIX "    Aspect Ratio: %" PRIu32 ":%" PRIu32, m_UniqueId, aspectRatio.first, aspectRatio.second);
+
+	PLOG_INFO(PREFIX "  Static:", m_UniqueId);
+	PLOG_INFO(PREFIX "    Usage: %s", m_UniqueId, Utility::UsageToString(GetUsage()));
+	PLOG_INFO(PREFIX "    Quality Preset: %s", m_UniqueId, Utility::QualityPresetToString(GetQualityPreset()));
+	auto profileLevel = static_cast<uint16_t>(GetProfileLevel());
+	PLOG_INFO(PREFIX "    Profile: %s %" PRIu16 ".%" PRIu16, m_UniqueId, Utility::ProfileToString(GetProfile()),
+			  profileLevel / 10, profileLevel % 10);
+	PLOG_INFO(PREFIX "    Tier: %s", m_UniqueId, Utility::TierToString(GetTier()));
+	PLOG_INFO(PREFIX "    Coding Type: %s", m_UniqueId, Utility::CodingTypeToString(GetCodingType()));
+	PLOG_INFO(PREFIX "    Max. Reference Frames: %" PRIu16, m_UniqueId, (uint16_t)GetMaximumReferenceFrames());
+	PLOG_INFO(PREFIX "    Max. Long-Term Reference Frames: %" PRIu16, m_UniqueId,
+			  (uint16_t)GetMaximumLongTermReferenceFrames());
+
 	PLOG_INFO(PREFIX "  Rate Control:", m_UniqueId);
 	PLOG_INFO(PREFIX "    Method: %s", m_UniqueId, Utility::RateControlMethodToString(GetRateControlMethod()));
 	PLOG_INFO(PREFIX "    Pre-Pass Mode: %s", m_UniqueId, Utility::PrePassModeToString(GetPrePassMode()));
-#pragma region QP
+
 	PLOG_INFO(PREFIX "    QP:", m_UniqueId);
 	PLOG_INFO(PREFIX "      Ranges:", m_UniqueId);
 	PLOG_INFO(PREFIX "        I-Frame: %" PRIu8 " - %" PRIu8, m_UniqueId, GetIFrameQPMinimum(), GetIFrameQPMaximum());
@@ -1490,34 +1487,29 @@ void Plugin::AMD::EncoderH265::LogProperties()
 	PLOG_INFO(PREFIX "      Fixed:", m_UniqueId);
 	PLOG_INFO(PREFIX "        I-Frame: %" PRIu8, m_UniqueId, GetIFrameQP());
 	PLOG_INFO(PREFIX "        P-Frame: %" PRIu8, m_UniqueId, GetPFrameQP());
-#pragma endregion QP
-#pragma region    Bitrate
-    PLOG_INFO(PREFIX "    Bitrate:", m_UniqueId);
-    PLOG_INFO(PREFIX "      Target: %" PRIu64 " bit/s", m_UniqueId, GetTargetBitrate());
-    PLOG_INFO(PREFIX "      Peak: %" PRIu64 " bit/s", m_UniqueId, GetPeakBitrate());
-#pragma endregion Bitrate
-#pragma region    Flags
-    PLOG_INFO(PREFIX "    Flags:", m_UniqueId);
-    PLOG_INFO(PREFIX "      Filler Data: %s", m_UniqueId, IsFillerDataEnabled() ? "Enabled" : "Disabled");
-    PLOG_INFO(PREFIX "      Frame Skipping: %s", m_UniqueId, IsFrameSkippingEnabled() ? "Enabled" : "Disabled");
-    PLOG_INFO(PREFIX "        Period: %" PRIu32 " Frames", m_UniqueId, GetFrameSkippingPeriod());
-    PLOG_INFO(PREFIX "        Behaviour: %s", m_UniqueId,
-              GetFrameSkippingBehaviour() ? "Keep every Nth frame" : "Skip every Nth frame");
-    PLOG_INFO(PREFIX "      Variance Based Adaptive Quantization: %s", m_UniqueId,
-              IsVarianceBasedAdaptiveQuantizationEnabled() ? "Enabled" : "Disabled");
-    PLOG_INFO(PREFIX "      Enforce Hypothetical Reference Decoder: %s", m_UniqueId,
-              IsEnforceHRDEnabled() ? "Enabled" : "Disabled");
-#pragma endregion Flags
-#pragma region Video Buffering Verifier
+
+	PLOG_INFO(PREFIX "    Bitrate:", m_UniqueId);
+	PLOG_INFO(PREFIX "      Target: %" PRIu64 " bit/s", m_UniqueId, GetTargetBitrate());
+	PLOG_INFO(PREFIX "      Peak: %" PRIu64 " bit/s", m_UniqueId, GetPeakBitrate());
+
+	PLOG_INFO(PREFIX "    Flags:", m_UniqueId);
+	PLOG_INFO(PREFIX "      Filler Data: %s", m_UniqueId, IsFillerDataEnabled() ? "Enabled" : "Disabled");
+	PLOG_INFO(PREFIX "      Frame Skipping: %s", m_UniqueId, IsFrameSkippingEnabled() ? "Enabled" : "Disabled");
+	PLOG_INFO(PREFIX "        Period: %" PRIu32 " Frames", m_UniqueId, GetFrameSkippingPeriod());
+	PLOG_INFO(PREFIX "        Behaviour: %s", m_UniqueId,
+			  GetFrameSkippingBehaviour() ? "Keep every Nth frame" : "Skip every Nth frame");
+	PLOG_INFO(PREFIX "      Variance Based Adaptive Quantization: %s", m_UniqueId,
+			  IsVarianceBasedAdaptiveQuantizationEnabled() ? "Enabled" : "Disabled");
+	PLOG_INFO(PREFIX "      Enforce Hypothetical Reference Decoder: %s", m_UniqueId,
+			  IsEnforceHRDEnabled() ? "Enabled" : "Disabled");
+
 	PLOG_INFO(PREFIX "    Video Buffering Verfier:", m_UniqueId);
 	PLOG_INFO(PREFIX "      Buffer Size: %" PRIu64 " bits", m_UniqueId, GetVBVBufferSize());
 	PLOG_INFO(PREFIX "      Initial Fullness: %" PRIu64 " %%", m_UniqueId,
 			  (uint64_t)round(GetInitialVBVBufferFullness() * 100.0));
-#pragma endregion Video Buffering Verifier
-	PLOG_INFO(PREFIX "    Max. Access Unit Size: %" PRIu32, m_UniqueId, GetMaximumAccessUnitSize());
-#pragma endregion Rate Control
 
-#pragma region Picture Control
+	PLOG_INFO(PREFIX "    Max. Access Unit Size: %" PRIu32, m_UniqueId, GetMaximumAccessUnitSize());
+
 	PLOG_INFO(PREFIX "  Picture Control:", m_UniqueId);
 	PLOG_INFO(PREFIX "    Period:", m_UniqueId);
 	PLOG_INFO(PREFIX "      IDR: %" PRIu32 " GOPs", m_UniqueId, GetIDRPeriod());
@@ -1534,11 +1526,8 @@ void Plugin::AMD::EncoderH265::LogProperties()
 			  IsMotionEstimationQuarterPixelEnabled() ? (IsMotionEstimationHalfPixelEnabled() ? "Quarter, " : "Quarter")
 													  : "",
 			  IsMotionEstimationHalfPixelEnabled() ? "Half" : "");
-#pragma endregion Picture Control
 
-#pragma region Experimental
 	PLOG_INFO(PREFIX "  Experimental:", m_UniqueId);
 	PLOG_INFO(PREFIX "    Input Queue: %" PRIu32, m_UniqueId, GetInputQueueSize());
-#pragma endregion Experimental
 }
 #endif

@@ -62,13 +62,11 @@ const char* Plugin::Interface::H265Interface::get_name(void*) noexcept
 
 void Plugin::Interface::H265Interface::get_defaults(obs_data_t* data) noexcept
 {
-#pragma region OBS - Enforce Streaming Service Restrictions
 	obs_data_set_default_int(data, "bitrate", 0);
 	obs_data_set_default_int(data, "keyint_sec", 0);
 	obs_data_set_default_string(data, "rate_control", "");
 	obs_data_set_default_string(data, "profile", "");
 	obs_data_set_default_string(data, "preset", "");
-#pragma endregion OBS - Enforce Streaming Service Restrictions
 
 	// Static
 	//obs_data_set_default_int(data, P_USAGE, static_cast<int64_t>(Usage::Transcoding));
@@ -148,16 +146,14 @@ try {
 	obs_property_t* p;
 
 	// Static Properties
-#pragma region Quality Preset
+
 	p = obs_properties_add_list(props, P_QUALITYPRESET, P_TRANSLATE(P_QUALITYPRESET), OBS_COMBO_TYPE_LIST,
 								OBS_COMBO_FORMAT_INT);
 	obs_property_set_long_description(p, P_TRANSLATE(P_DESC(P_QUALITYPRESET)));
 	obs_property_list_add_int(p, P_TRANSLATE(P_QUALITYPRESET_SPEED), static_cast<int32_t>(QualityPreset::Speed));
 	obs_property_list_add_int(p, P_TRANSLATE(P_QUALITYPRESET_BALANCED), static_cast<int32_t>(QualityPreset::Balanced));
 	obs_property_list_add_int(p, P_TRANSLATE(P_QUALITYPRESET_QUALITY), static_cast<int32_t>(QualityPreset::Quality));
-#pragma endregion Quality Preset
 
-#pragma region Profile, Levels
 	p = obs_properties_add_list(props, P_PROFILE, P_TRANSLATE(P_PROFILE), OBS_COMBO_TYPE_LIST, OBS_COMBO_FORMAT_INT);
 	obs_property_set_long_description(p, P_TRANSLATE(P_DESC(P_PROFILE)));
 	obs_property_list_add_int(p, "Main", static_cast<int32_t>(Profile::Main));
@@ -179,30 +175,23 @@ try {
 	obs_property_list_add_int(p, "6.0", static_cast<int32_t>(ProfileLevel::L60));
 	obs_property_list_add_int(p, "6.1", static_cast<int32_t>(ProfileLevel::L61));
 	obs_property_list_add_int(p, "6.2", static_cast<int32_t>(ProfileLevel::L62));
-#pragma endregion Profile, Levels
 
-#pragma region Tier
 	p = obs_properties_add_list(props, P_TIER, P_TRANSLATE(P_TIER), OBS_COMBO_TYPE_LIST, OBS_COMBO_FORMAT_INT);
 	obs_property_set_long_description(p, P_TRANSLATE(P_DESC(P_TIER)));
 	obs_property_list_add_int(p, "Main", static_cast<int32_t>(H265::Tier::Main));
 	obs_property_list_add_int(p, "High", static_cast<int32_t>(H265::Tier::High));
-#pragma endregion Tier
 
-#pragma region Coding Type
 	p = obs_properties_add_list(props, P_CODINGTYPE, P_TRANSLATE(P_CODINGTYPE), OBS_COMBO_TYPE_LIST,
 								OBS_COMBO_FORMAT_INT);
 	obs_property_set_long_description(p, P_TRANSLATE(P_DESC(P_CODINGTYPE)));
 	obs_property_list_add_int(p, P_TRANSLATE(P_UTIL_AUTOMATIC), static_cast<int32_t>(CodingType::Automatic));
 	obs_property_list_add_int(p, "CABAC", static_cast<int32_t>(CodingType::CABAC));
-#pragma endregion Coding Type
 
-#pragma region Maximum Reference Frames
 	p = obs_properties_add_int_slider(props, P_MAXIMUMREFERENCEFRAMES, P_TRANSLATE(P_MAXIMUMREFERENCEFRAMES), 1, 16, 1);
 	obs_property_set_long_description(p, P_TRANSLATE(P_DESC(P_MAXIMUMREFERENCEFRAMES)));
-#pragma endregion Maximum Reference Frames
 
 	// Rate Control
-#pragma region Rate Control Method
+
 	p = obs_properties_add_list(props, P_RATECONTROLMETHOD, P_TRANSLATE(P_RATECONTROLMETHOD), OBS_COMBO_TYPE_LIST,
 								OBS_COMBO_FORMAT_INT);
 	obs_property_set_long_description(p, P_TRANSLATE(P_DESC(P_RATECONTROLMETHOD)));
@@ -215,17 +204,13 @@ try {
 	obs_property_list_add_int(p, P_TRANSLATE(P_RATECONTROLMETHOD_VBRLAT),
 							  static_cast<int32_t>(RateControlMethod::LatencyConstrainedVariableBitrate));
 	obs_property_set_modified_callback(p, properties_modified);
-#pragma endregion Rate Control Method
 
-#pragma region Pre - Pass
 	p = obs_properties_add_list(props, P_PREPASSMODE, P_TRANSLATE(P_PREPASSMODE), OBS_COMBO_TYPE_LIST,
 								OBS_COMBO_FORMAT_INT);
 	obs_property_set_long_description(p, P_TRANSLATE(P_DESC(P_PREPASSMODE)));
 	obs_property_list_add_int(p, P_TRANSLATE(P_UTIL_SWITCH_DISABLED), static_cast<int32_t>(PrePassMode::Disabled));
 	obs_property_list_add_int(p, P_TRANSLATE(P_UTIL_SWITCH_ENABLED), static_cast<int32_t>(PrePassMode::Enabled));
-#pragma endregion Pre - Pass
 
-#pragma region Parameters
 	/// Bitrate Constraints
 	p = obs_properties_add_int(props, "bitrate", P_TRANSLATE(P_BITRATE_TARGET), 0, 1, 1);
 	obs_property_set_long_description(p, P_TRANSLATE(P_DESC(P_BITRATE_TARGET)));
@@ -247,17 +232,13 @@ try {
 	obs_property_set_long_description(p, P_TRANSLATE(P_DESC(P_QP_PFRAME_MINIMUM)));
 	p = obs_properties_add_int_slider(props, P_QP_PFRAME_MAXIMUM, P_TRANSLATE(P_QP_PFRAME_MAXIMUM), 0, 51, 1);
 	obs_property_set_long_description(p, P_TRANSLATE(P_DESC(P_QP_PFRAME_MAXIMUM)));
-#pragma endregion Parameters
 
-#pragma region Filler Data
 	p = obs_properties_add_list(props, P_FILLERDATA, P_TRANSLATE(P_FILLERDATA), OBS_COMBO_TYPE_LIST,
 								OBS_COMBO_FORMAT_INT);
 	obs_property_set_long_description(p, P_TRANSLATE(P_DESC(P_FILLERDATA)));
 	obs_property_list_add_int(p, P_TRANSLATE(P_UTIL_SWITCH_DISABLED), 0);
 	obs_property_list_add_int(p, P_TRANSLATE(P_UTIL_SWITCH_ENABLED), 1);
-#pragma endregion Filler Data
 
-#pragma region Frame Skipping
 	p = obs_properties_add_list(props, P_FRAMESKIPPING, P_TRANSLATE(P_FRAMESKIPPING), OBS_COMBO_TYPE_LIST,
 								OBS_COMBO_FORMAT_INT);
 	obs_property_set_long_description(p, P_TRANSLATE(P_DESC(P_FRAMESKIPPING)));
@@ -270,22 +251,17 @@ try {
 	obs_property_set_long_description(p, P_TRANSLATE(P_DESC(P_FRAMESKIPPING_BEHAVIOUR)));
 	obs_property_list_add_int(p, P_TRANSLATE(P_FRAMESKIPPING_SKIPNTH), 0);
 	obs_property_list_add_int(p, P_TRANSLATE(P_FRAMESKIPPING_KEEPNTH), 1);
-#pragma endregion Frame Skipping
 
-#pragma region VBAQ
 	p = obs_properties_add_list(props, P_VBAQ, P_TRANSLATE(P_VBAQ), OBS_COMBO_TYPE_LIST, OBS_COMBO_FORMAT_INT);
 	obs_property_set_long_description(p, P_TRANSLATE(P_DESC(P_VBAQ)));
 	obs_property_list_add_int(p, P_TRANSLATE(P_UTIL_SWITCH_DISABLED), 0);
 	obs_property_list_add_int(p, P_TRANSLATE(P_UTIL_SWITCH_ENABLED), 1);
-#pragma endregion VBAQ
 
-#pragma region Enforce Hypothetical Reference Decoder Restrictions
 	p = obs_properties_add_list(props, P_ENFORCEHRD, P_TRANSLATE(P_ENFORCEHRD), OBS_COMBO_TYPE_LIST,
 								OBS_COMBO_FORMAT_INT);
 	obs_property_set_long_description(p, P_TRANSLATE(P_DESC(P_ENFORCEHRD)));
 	obs_property_list_add_int(p, P_TRANSLATE(P_UTIL_SWITCH_DISABLED), 0);
 	obs_property_list_add_int(p, P_TRANSLATE(P_UTIL_SWITCH_ENABLED), 1);
-#pragma endregion Enforce Hypothetical Reference Decoder Restrictions
 
 	{ // High Motion Quality Boost
 		p = obs_properties_add_list(props, P_HIGHMOTIONQUALITYBOOST, P_TRANSLATE(P_HIGHMOTIONQUALITYBOOST),
@@ -297,34 +273,27 @@ try {
 	}
 
 	// VBV Buffer
-#pragma region VBV Buffer Mode
+
 	p = obs_properties_add_list(props, P_VBVBUFFER, P_TRANSLATE(P_VBVBUFFER), OBS_COMBO_TYPE_LIST,
 								OBS_COMBO_FORMAT_INT);
 	obs_property_set_long_description(p, P_TRANSLATE(P_DESC(P_VBVBUFFER)));
 	obs_property_list_add_int(p, P_TRANSLATE(P_UTIL_AUTOMATIC), 0);
 	obs_property_list_add_int(p, P_TRANSLATE(P_UTIL_MANUAL), 1);
 	obs_property_set_modified_callback(p, properties_modified);
-#pragma endregion VBV Buffer Mode
 
-#pragma region VBV Buffer Strictness
 	p = obs_properties_add_float_slider(props, P_VBVBUFFER_STRICTNESS, P_TRANSLATE(P_VBVBUFFER_STRICTNESS), 0.0, 100.0,
 										0.1);
 	obs_property_set_long_description(p, P_TRANSLATE(P_DESC(P_VBVBUFFER_STRICTNESS)));
-#pragma endregion VBV Buffer Strictness
 
-#pragma region VBV Buffer Size
 	p = obs_properties_add_int_slider(props, P_VBVBUFFER_SIZE, P_TRANSLATE(P_VBVBUFFER_SIZE), 1, 1000000, 1);
 	obs_property_set_long_description(p, P_TRANSLATE(P_DESC(P_VBVBUFFER_SIZE)));
-#pragma endregion VBV Buffer Size
 
-#pragma region VBV Buffer Initial Fullness
 	p = obs_properties_add_float_slider(props, P_VBVBUFFER_INITIALFULLNESS, P_TRANSLATE(P_VBVBUFFER_INITIALFULLNESS),
 										0.0, 100.0, 100.0 / 64.0);
 	obs_property_set_long_description(p, P_TRANSLATE(P_DESC(P_VBVBUFFER_INITIALFULLNESS)));
-#pragma endregion VBV Buffer Initial Fullness
 
 	// Picture Control
-#pragma region Interval and Periods
+
 	/// Keyframe, IDR
 	p = obs_properties_add_float(props, P_INTERVAL_KEYFRAME, P_TRANSLATE(P_INTERVAL_KEYFRAME), 0, 100, 0.001);
 	obs_property_set_long_description(p, P_TRANSLATE(P_DESC(P_INTERVAL_KEYFRAME)));
@@ -340,17 +309,13 @@ try {
 	obs_property_set_long_description(p, P_TRANSLATE(P_DESC(P_INTERVAL_PFRAME)));
 	p = obs_properties_add_int(props, P_PERIOD_PFRAME, P_TRANSLATE(P_PERIOD_PFRAME), 0, 1000, 1);
 	obs_property_set_long_description(p, P_TRANSLATE(P_DESC(P_PERIOD_PFRAME)));
-#pragma endregion Interval and Periods
 
-#pragma region GOP Type
 	p = obs_properties_add_list(props, P_GOP_TYPE, P_TRANSLATE(P_GOP_TYPE), OBS_COMBO_TYPE_LIST, OBS_COMBO_FORMAT_INT);
 	obs_property_set_long_description(p, P_TRANSLATE(P_DESC(P_GOP_TYPE)));
 	obs_property_list_add_int(p, P_TRANSLATE(P_GOP_TYPE_FIXED), static_cast<int64_t>(H265::GOPType::Fixed));
 	obs_property_list_add_int(p, P_TRANSLATE(P_GOP_TYPE_VARIABLE), static_cast<int64_t>(H265::GOPType::Variable));
 	obs_property_set_modified_callback(p, properties_modified);
-#pragma endregion GOP Type
 
-#pragma region GOP Size
 	p = obs_properties_add_int(props, P_GOP_SIZE, P_TRANSLATE(P_GOP_SIZE), 1, 1000, 1);
 	obs_property_set_long_description(p, P_TRANSLATE(P_DESC(P_GOP_SIZE)));
 
@@ -359,19 +324,15 @@ try {
 
 	p = obs_properties_add_int(props, P_GOP_SIZE_MAXIMUM, P_TRANSLATE(P_GOP_SIZE_MAXIMUM), 1, 1000, 1);
 	obs_property_set_long_description(p, P_TRANSLATE(P_DESC(P_GOP_SIZE_MAXIMUM)));
-#pragma endregion GOP Size
 
 	/// GOP Alignment?
 
-#pragma region Deblocking Filter
 	p = obs_properties_add_list(props, P_DEBLOCKINGFILTER, P_TRANSLATE(P_DEBLOCKINGFILTER), OBS_COMBO_TYPE_LIST,
 								OBS_COMBO_FORMAT_INT);
 	obs_property_set_long_description(p, P_TRANSLATE(P_DESC(P_DEBLOCKINGFILTER)));
 	obs_property_list_add_int(p, P_TRANSLATE(P_UTIL_SWITCH_DISABLED), 0);
 	obs_property_list_add_int(p, P_TRANSLATE(P_UTIL_SWITCH_ENABLED), 1);
-#pragma endregion Deblocking Filter
 
-#pragma region Motion Estimation
 	p = obs_properties_add_list(props, P_MOTIONESTIMATION, P_TRANSLATE(P_MOTIONESTIMATION), OBS_COMBO_TYPE_LIST,
 								OBS_COMBO_FORMAT_INT);
 	obs_property_set_long_description(p, P_TRANSLATE(P_DESC(P_MOTIONESTIMATION)));
@@ -379,25 +340,20 @@ try {
 	obs_property_list_add_int(p, P_TRANSLATE(P_MOTIONESTIMATION_HALF), 1);
 	obs_property_list_add_int(p, P_TRANSLATE(P_MOTIONESTIMATION_QUARTER), 2);
 	obs_property_list_add_int(p, P_TRANSLATE(P_MOTIONESTIMATION_FULL), 3);
-#pragma endregion Motion Estimation
 
 	// System
-#pragma region Video APIs
+
 	p = obs_properties_add_list(props, P_VIDEO_API, P_TRANSLATE(P_VIDEO_API), OBS_COMBO_TYPE_LIST,
 								OBS_COMBO_FORMAT_STRING);
 	obs_property_set_long_description(p, P_TRANSLATE(P_DESC(P_VIDEO_API)));
 	obs_property_set_modified_callback(p, properties_modified);
 	Utility::fill_api_list(p, Codec::HEVC);
-#pragma endregion Video APIs
 
-#pragma region Video Adapters
 	p = obs_properties_add_list(props, P_VIDEO_ADAPTER, P_TRANSLATE(P_VIDEO_ADAPTER), OBS_COMBO_TYPE_LIST,
 								OBS_COMBO_FORMAT_INT);
 	obs_property_set_long_description(p, P_TRANSLATE(P_DESC(P_VIDEO_ADAPTER)));
 	obs_property_set_modified_callback(p, properties_modified);
-#pragma endregion Video Adapters
 
-#pragma region OpenCL
 	p = obs_properties_add_list(props, P_OPENCL_TRANSFER, P_TRANSLATE(P_OPENCL_TRANSFER), OBS_COMBO_TYPE_LIST,
 								OBS_COMBO_FORMAT_INT);
 	obs_property_set_long_description(p, P_TRANSLATE(P_DESC(P_OPENCL_TRANSFER)));
@@ -409,9 +365,7 @@ try {
 	obs_property_set_long_description(p, P_TRANSLATE(P_DESC(P_OPENCL_CONVERSION)));
 	obs_property_list_add_int(p, P_TRANSLATE(P_UTIL_SWITCH_DISABLED), 0);
 	obs_property_list_add_int(p, P_TRANSLATE(P_UTIL_SWITCH_ENABLED), 1);
-#pragma endregion OpenCL
 
-#pragma region Asynchronous Queue
 	p = obs_properties_add_list(props, P_MULTITHREADING, P_TRANSLATE(P_MULTITHREADING), OBS_COMBO_TYPE_LIST,
 								OBS_COMBO_FORMAT_INT);
 	obs_property_set_long_description(p, P_TRANSLATE(P_DESC(P_MULTITHREADING)));
@@ -420,9 +374,7 @@ try {
 
 	p = obs_properties_add_int_slider(props, P_QUEUESIZE, P_TRANSLATE(P_QUEUESIZE), 1, 32, 1);
 	obs_property_set_long_description(p, P_TRANSLATE(P_DESC(P_QUEUESIZE)));
-#pragma endregion Asynchronous Queue
 
-#pragma region View Mode
 	p = obs_properties_add_list(props, P_VIEW, P_TRANSLATE(P_VIEW), OBS_COMBO_TYPE_LIST, OBS_COMBO_FORMAT_INT);
 	obs_property_set_long_description(p, P_TRANSLATE(P_DESC(P_VIEW)));
 	obs_property_list_add_int(p, P_TRANSLATE(P_VIEW_BASIC), static_cast<int32_t>(ViewMode::Basic));
@@ -430,7 +382,6 @@ try {
 	obs_property_list_add_int(p, P_TRANSLATE(P_VIEW_EXPERT), static_cast<int32_t>(ViewMode::Expert));
 	obs_property_list_add_int(p, P_TRANSLATE(P_VIEW_MASTER), static_cast<int32_t>(ViewMode::Master));
 	obs_property_set_modified_callback(p, properties_modified);
-#pragma endregion View Mode
 
 	/// Debug
 	p = obs_properties_add_bool(props, P_DEBUG, P_TRANSLATE(P_DEBUG));
@@ -475,7 +426,6 @@ try {
 	// Transfer settings from older Plugin versions to newer ones.
 	obs_data_transfer_settings(data);
 
-#pragma region Video API& Adapter
 	// Video API
 	const char *videoAPI_last = obs_data_get_string(data, ("last" P_VIDEO_API)),
 			   *videoAPI_cur  = obs_data_get_string(data, P_VIDEO_API);
@@ -566,9 +516,7 @@ try {
 			PLOG_ERROR("Exception occurred while updating capabilities: %s", e.what());
 		}
 	}
-#pragma endregion Video API& Adapter
 
-#pragma region View Mode
 	ViewMode lastView = static_cast<ViewMode>(obs_data_get_int(data, ("last" P_VIEW))),
 			 curView  = static_cast<ViewMode>(obs_data_get_int(data, P_VIEW));
 	if (lastView != curView) {
@@ -641,7 +589,6 @@ try {
 			obs_data_unset_user_value(data, kv.first);
 	}
 
-#pragma region Rate Control
 	bool vis_rcm_bitrate_target = false, vis_rcm_bitrate_peak = false, vis_rcm_qp = false, vis_rcm_fillerdata = false;
 
 	RateControlMethod lastRCM = static_cast<RateControlMethod>(obs_data_get_int(data, ("last" P_RATECONTROLMETHOD))),
@@ -716,9 +663,7 @@ try {
 	if (!(curView >= ViewMode::Expert) || vis_rcm_qp) {
 		obs_data_unset_user_value(data, P_VBAQ);
 	}
-#pragma endregion Rate Control
 
-#pragma region VBV Buffer
 	uint32_t vbvBufferMode    = static_cast<uint32_t>(obs_data_get_int(data, P_VBVBUFFER));
 	bool     vbvBufferVisible = (curView >= ViewMode::Advanced);
 
@@ -735,9 +680,7 @@ try {
 		obs_data_unset_user_value(data, P_VBVBUFFER_SIZE);
 	if (!vbvBufferVisible || vbvBufferMode == 1)
 		obs_data_unset_user_value(data, P_VBVBUFFER_STRICTNESS);
-#pragma endregion VBV Buffer
 
-#pragma region GOP
 	bool gopvisible    = (curView >= ViewMode::Expert);
 	bool goptype_fixed = (static_cast<H265::GOPType>(obs_data_get_int(data, P_GOP_TYPE)) == H265::GOPType::Fixed);
 	obs_property_set_visible(obs_properties_get(props, P_GOP_SIZE), goptype_fixed && gopvisible);
@@ -749,8 +692,6 @@ try {
 		obs_data_unset_user_value(data, P_GOP_SIZE_MINIMUM);
 		obs_data_unset_user_value(data, P_GOP_SIZE_MAXIMUM);
 	}
-#pragma endregion GOP
-#pragma endregion View Mode
 
 	// Permanently disable static properties while encoding.
 	void* enc = obs_properties_get_param(props);
@@ -965,7 +906,7 @@ Plugin::Interface::H265Interface::H265Interface(obs_data_t* data, obs_encoder_t*
 	m_VideoEncoder->SetMotionEstimationQuarterPixelEnabled(!!(obs_data_get_int(data, P_MOTIONESTIMATION) & 2));
 
 	// OBS - Enforce Streaming Service Restrictions
-#pragma region OBS - Enforce Streaming Service Restrictions
+
 	{
 		// Profile
 		const char* p_str = obs_data_get_string(data, "profile");
@@ -1008,7 +949,6 @@ Plugin::Interface::H265Interface::H265Interface(obs_data_t* data, obs_encoder_t*
 			obs_data_unset_user_value(data, "rate_control");
 		}
 	}
-#pragma endregion OBS - Enforce Streaming Service Restrictions
 
 	// Dynamic Properties (Can be changed during Encoding)
 	this->update(data);

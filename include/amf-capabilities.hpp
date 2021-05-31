@@ -35,7 +35,6 @@
 namespace Plugin {
 	namespace AMD {
 		class CapabilityManager {
-#pragma region Singleton
 			public:
 			static void               Initialize();
 			static CapabilityManager* Instance();
@@ -48,7 +47,6 @@ namespace Plugin {
 			public: // Remove all Copy operators
 			CapabilityManager(CapabilityManager const&) = delete;
 			void operator=(CapabilityManager const&) = delete;
-#pragma endregion Singleton
 
 			bool IsCodecSupported(AMD::Codec codec);
 			bool IsCodecSupportedByAPI(AMD::Codec codec, API::Type api);

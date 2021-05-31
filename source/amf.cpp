@@ -47,7 +47,6 @@ class CustomWriter : public amf::AMFTraceWriter {
 	virtual void __cdecl Flush() override {}
 };
 
-#pragma region    Singleton
 static AMF*       __instance;
 static std::mutex __instance_mutex;
 void              Plugin::AMD::AMF::Initialize()
@@ -70,7 +69,6 @@ void Plugin::AMD::AMF::Finalize()
 		delete __instance;
 	__instance = nullptr;
 }
-#pragma endregion Singleton
 
 const wchar_t* loggername = L"OBSWriter";
 
@@ -78,7 +76,6 @@ Plugin::AMD::AMF::AMF()
 {
 	AMF_RESULT res = AMF_OK;
 
-#pragma region Null Class Members
 	m_TimerPeriod        = 0;
 	m_AMFVersion_Plugin  = AMF_FULL_VERSION;
 	m_AMFVersion_Runtime = 0;
@@ -91,7 +88,6 @@ Plugin::AMD::AMF::AMF()
 	AMFInit         = nullptr;
 	m_TraceWriter   = nullptr;
 	m_TimerPeriod   = 0;
-#pragma endregion Null Class Members
 
 #ifdef _WIN32
 	std::vector<char> verbuf;
@@ -225,7 +221,6 @@ Plugin::AMD::AMF::~AMF()
 	}
 	PLOG_DEBUG("<%s> Finalized.", __FUNCTION_NAME__);
 
-#pragma region Null Class Members
 	m_TimerPeriod        = 0;
 	m_AMFVersion_Plugin  = 0;
 	m_AMFVersion_Runtime = 0;
@@ -236,7 +231,6 @@ Plugin::AMD::AMF::~AMF()
 	m_AMFDebug      = nullptr;
 	AMFQueryVersion = nullptr;
 	AMFInit         = nullptr;
-#pragma endregion Null Class Members
 }
 
 amf::AMFFactory* Plugin::AMD::AMF::GetFactory()

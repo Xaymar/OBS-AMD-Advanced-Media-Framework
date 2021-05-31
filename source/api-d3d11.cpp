@@ -26,7 +26,6 @@ using namespace Plugin::API;
 
 class SingletonDXGI {
 	public:
-#pragma region Singleton
 	static std::shared_ptr<SingletonDXGI> GetInstance()
 	{
 		static std::shared_ptr<SingletonDXGI> __instance = std::make_shared<SingletonDXGI>();
@@ -35,7 +34,6 @@ class SingletonDXGI {
 		const std::lock_guard<std::mutex> lock(__mutex);
 		return __instance;
 	}
-#pragma endregion Singleton
 
 	SingletonDXGI()
 	{
@@ -88,7 +86,6 @@ class SingletonDXGI {
 
 class SingletonD3D11 {
 	public:
-#pragma region Singleton
 	static std::shared_ptr<SingletonD3D11> GetInstance()
 	{
 		static std::shared_ptr<SingletonD3D11> __instance = std::make_shared<SingletonD3D11>();
@@ -97,7 +94,6 @@ class SingletonD3D11 {
 		const std::lock_guard<std::mutex> lock(__mutex);
 		return __instance;
 	}
-#pragma endregion Singleton
 
 	SingletonD3D11()
 	{
