@@ -67,23 +67,25 @@ namespace amf
         AMF_SURFACE_AYUV,               ///< 15 - packed 4:4:4 - 8 bit per component YUVA
         AMF_SURFACE_Y410,               ///< 16 - packed 4:4:4 - 10 bit per YUV component, 2 bits per A, AVYU 
         AMF_SURFACE_Y416,               ///< 16 - packed 4:4:4 - 16 bit per component 4 bytes, AVYU
+        AMF_SURFACE_GRAY32,             ///< 17 - single component - 32 bit
 
         AMF_SURFACE_FIRST = AMF_SURFACE_NV12,
-        AMF_SURFACE_LAST = AMF_SURFACE_Y416
+        AMF_SURFACE_LAST = AMF_SURFACE_GRAY32
     } AMF_SURFACE_FORMAT;
     //----------------------------------------------------------------------------------------------
     // AMF_SURFACE_USAGE translates to D3D11_BIND_FLAG or VkImageUsageFlags
     // bit mask
     //----------------------------------------------------------------------------------------------
     typedef enum AMF_SURFACE_USAGE_BITS
-    {                                                       // D3D11                        Vulkan 
-        AMF_SURFACE_USAGE_DEFAULT           = 0x80000000,   // will apply default           VK_IMAGE_USAGE_TRANSFER_SRC_BIT| VK_IMAGE_USAGE_TRANSFER_DST_BIT | VK_IMAGE_USAGE_SAMPLED_BIT | VK_IMAGE_USAGE_STORAGE_BIT | VK_IMAGE_USAGE_INPUT_ATTACHMENT_BIT
-        AMF_SURFACE_USAGE_NONE              = 0x00000000,   // 0,                           , 0
-        AMF_SURFACE_USAGE_SHADER_RESOURCE   = 0x00000001,   // D3D11_BIND_SHADER_RESOURCE,  VK_IMAGE_USAGE_SAMPLED_BIT | VK_IMAGE_USAGE_INPUT_ATTACHMENT_BIT
-        AMF_SURFACE_USAGE_RENDER_TARGET     = 0x00000002,   // D3D11_BIND_RENDER_TARGET,    VK_IMAGE_USAGE_COLOR_ATTACHMENT_BIT
-        AMF_SURFACE_USAGE_UNORDERED_ACCESS  = 0x00000004,   // D3D11_BIND_UNORDERED_ACCESS, VK_IMAGE_USAGE_SAMPLED_BIT | VK_IMAGE_USAGE_STORAGE_BIT | VK_IMAGE_USAGE_INPUT_ATTACHMENT_BIT
-        AMF_SURFACE_USAGE_TRANSFER_SRC      = 0x00000008,   //                              VK_IMAGE_USAGE_TRANSFER_SRC_BIT
-        AMF_SURFACE_USAGE_TRANSFER_DST      = 0x00000010,   //                              VK_IMAGE_USAGE_TRANSFER_DST_BIT
+    {                                                       // D3D11                        D3D12                                       Vulkan 
+        AMF_SURFACE_USAGE_DEFAULT           = 0x80000000,   // will apply default           D3D12_RESOURCE_FLAG_NONE                    VK_IMAGE_USAGE_TRANSFER_SRC_BIT| VK_IMAGE_USAGE_TRANSFER_DST_BIT | VK_IMAGE_USAGE_SAMPLED_BIT | VK_IMAGE_USAGE_STORAGE_BIT | VK_IMAGE_USAGE_INPUT_ATTACHMENT_BIT
+        AMF_SURFACE_USAGE_NONE              = 0x00000000,   // 0,                           D3D12_RESOURCE_FLAG_NONE,                   0
+        AMF_SURFACE_USAGE_SHADER_RESOURCE   = 0x00000001,   // D3D11_BIND_SHADER_RESOURCE,	D3D12_RESOURCE_FLAG_NONE					VK_IMAGE_USAGE_SAMPLED_BIT | VK_IMAGE_USAGE_INPUT_ATTACHMENT_BIT
+        AMF_SURFACE_USAGE_RENDER_TARGET     = 0x00000002,   // D3D11_BIND_RENDER_TARGET,    D3D12_RESOURCE_FLAG_ALLOW_RENDER_TARGET,    VK_IMAGE_USAGE_COLOR_ATTACHMENT_BIT
+        AMF_SURFACE_USAGE_UNORDERED_ACCESS  = 0x00000004,   // D3D11_BIND_UNORDERED_ACCESS, D3D12_RESOURCE_FLAG_ALLOW_UNORDERED_ACCESS, VK_IMAGE_USAGE_SAMPLED_BIT | VK_IMAGE_USAGE_STORAGE_BIT | VK_IMAGE_USAGE_INPUT_ATTACHMENT_BIT
+        AMF_SURFACE_USAGE_TRANSFER_SRC      = 0x00000008,   //								D3D12_RESOURCE_FLAG_NONE    	            VK_IMAGE_USAGE_TRANSFER_SRC_BIT
+        AMF_SURFACE_USAGE_TRANSFER_DST      = 0x00000010,   //								D3D12_RESOURCE_FLAG_NONE		            VK_IMAGE_USAGE_TRANSFER_DST_BIT
+        AMF_SURFACE_USAGE_LINEAR            = 0x00000020    
     } AMF_SURFACE_USAGE_BITS;
     typedef amf_flags AMF_SURFACE_USAGE;
     //----------------------------------------------------------------------------------------------

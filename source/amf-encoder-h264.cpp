@@ -537,7 +537,7 @@ Plugin::AMD::RateControlMethod Plugin::AMD::EncoderH264::GetRateControlMethod()
 std::vector<PrePassMode> Plugin::AMD::EncoderH264::CapsPrePassMode()
 {
 	const amf::AMFPropertyInfo* var;
-	AMF_RESULT res = m_AMFEncoder->GetPropertyInfo(AMF_VIDEO_ENCODER_RATE_CONTROL_PREANALYSIS_ENABLE, &var);
+	AMF_RESULT res = m_AMFEncoder->GetPropertyInfo(AMF_VIDEO_ENCODER_PREENCODE_ENABLE, &var);
 	if (res != AMF_OK) {
 		QUICK_FORMAT_MESSAGE(errMsg, PREFIX "<%s> Querying capabilities failed, error %ls (code %d)", m_UniqueId,
 							 __FUNCTION_NAME__, m_AMF->GetTrace()->GetResultText(res), res);
@@ -558,7 +558,7 @@ std::vector<PrePassMode> Plugin::AMD::EncoderH264::CapsPrePassMode()
 void Plugin::AMD::EncoderH264::SetPrePassMode(PrePassMode v)
 {
 	AMF_RESULT res =
-		m_AMFEncoder->SetProperty(AMF_VIDEO_ENCODER_RATE_CONTROL_PREANALYSIS_ENABLE, Utility::PrePassModeToAMFH264(v));
+		m_AMFEncoder->SetProperty(AMF_VIDEO_ENCODER_PREENCODE_ENABLE, Utility::PrePassModeToAMFH264(v));
 	if (res != AMF_OK) {
 		QUICK_FORMAT_MESSAGE(errMsg, PREFIX "<%s> Failed to set to %s, error %ls (code %d)", m_UniqueId,
 							 __FUNCTION_NAME__, Utility::PrePassModeToString(v), m_AMF->GetTrace()->GetResultText(res),
@@ -571,7 +571,7 @@ Plugin::AMD::PrePassMode Plugin::AMD::EncoderH264::GetPrePassMode()
 {
 	int64_t e;
 
-	AMF_RESULT res = m_AMFEncoder->GetProperty(AMF_VIDEO_ENCODER_RATE_CONTROL_PREANALYSIS_ENABLE, &e);
+	AMF_RESULT res = m_AMFEncoder->GetProperty(AMF_VIDEO_ENCODER_PREENCODE_ENABLE, &e);
 	if (res != AMF_OK) {
 		QUICK_FORMAT_MESSAGE(errMsg, PREFIX "Unable to retrieve value, error %ls (code %d)", m_UniqueId,
 							 m_AMF->GetTrace()->GetResultText(res), res);

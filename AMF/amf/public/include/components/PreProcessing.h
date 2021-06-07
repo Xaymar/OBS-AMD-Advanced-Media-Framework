@@ -9,7 +9,7 @@
 // 
 // MIT license 
 // 
-// Copyright (c) 2017 Advanced Micro Devices, Inc. All rights reserved.
+// Copyright (c) 2020 Advanced Micro Devices, Inc. All rights reserved.
 //
 // Permission is hereby granted, free of charge, to any person obtaining a copy
 // of this software and associated documentation files (the "Software"), to deal
@@ -30,30 +30,21 @@
 // THE SOFTWARE.
 //
 
-/**
-***************************************************************************************************
-* @file  Version.h
-* @brief Version declaration
-***************************************************************************************************
-*/
-#ifndef AMF_Version_h
-#define AMF_Version_h
+#ifndef AMFPreProcessing_h
+#define AMFPreProcessing_h
+
 #pragma once
 
-#include "Platform.h"
+#define AMFPreProcessing L"AMFPreProcessing"
 
-#define AMF_MAKE_FULL_VERSION(VERSION_MAJOR, VERSION_MINOR, VERSION_RELEASE, VERSION_BUILD_NUM)    ( ((amf_uint64)(VERSION_MAJOR) << 48ull) | ((amf_uint64)(VERSION_MINOR) << 32ull) | ((amf_uint64)(VERSION_RELEASE) << 16ull)  | (amf_uint64)(VERSION_BUILD_NUM))
 
-#define AMF_GET_MAJOR_VERSION(x)      ((x >> 48ull) & 0xFFFF)
-#define AMF_GET_MINOR_VERSION(x)      ((x >> 32ull) & 0xFFFF)
-#define AMF_GET_SUBMINOR_VERSION(x)   ((x >> 16ull) & 0xFFFF)
-#define AMF_GET_BUILD_VERSION(x)      ((x >>  0ull) & 0xFFFF)
+// PA object properties
+#define AMF_PP_ENGINE_TYPE                   L"PPEngineType"                   // AMF_MEMORY_TYPE (Host, DX11, OPENCL default : OPENCL)"        - determines how the object is initialized and what kernels to use
+                                                                               //                                                                 by default it is OpenCL (Host, DX11 and OpenCL are currently available)
 
-#define AMF_VERSION_MAJOR       1
-#define AMF_VERSION_MINOR       4
-#define AMF_VERSION_RELEASE     18
-#define AMF_VERSION_BUILD_NUM   0
+#define AMF_PP_ADAPTIVE_FILTER_STRENGTH      L"PPAdaptiveFilterStrength"       // int       (default : 4)                                       - strength:    0 - 10: the higher the value, the stronger the filtering
+#define AMF_PP_ADAPTIVE_FILTER_SENSITIVITY   L"PPAdaptiveFilterSensitivity"	   // int       (default : 4)                                       - sensitivity: 0 - 10: the lower the value, the more sensitive to edge (preserve more details)
 
-#define AMF_FULL_VERSION AMF_MAKE_FULL_VERSION(AMF_VERSION_MAJOR, AMF_VERSION_MINOR, AMF_VERSION_RELEASE, AMF_VERSION_BUILD_NUM)
 
-#endif //#ifndef AMF_Version_h
+
+#endif //#ifndef AMFPreProcessing_h

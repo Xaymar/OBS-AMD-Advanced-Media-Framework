@@ -9,7 +9,7 @@
 // 
 // MIT license 
 // 
-// Copyright (c) 2017 Advanced Micro Devices, Inc. All rights reserved.
+// Copyright (c) 2018 Advanced Micro Devices, Inc. All rights reserved.
 //
 // Permission is hereby granted, free of charge, to any person obtaining a copy
 // of this software and associated documentation files (the "Software"), to deal
@@ -30,30 +30,15 @@
 // THE SOFTWARE.
 //
 
-/**
-***************************************************************************************************
-* @file  Version.h
-* @brief Version declaration
-***************************************************************************************************
-*/
-#ifndef AMF_Version_h
-#define AMF_Version_h
-#pragma once
-
+#ifndef __D3D12AMF_h__
+#define __D3D12AMF_h__
+#pragma once 
 #include "Platform.h"
+#if defined(_WIN32)
+// syncronization properties set via SetPrivateData()
+AMF_WEAK GUID  AMFResourceStateGUID = { 0x452da9bf, 0x4ad7, 0x47a5, { 0xa6, 0x9b, 0x96, 0xd3, 0x23, 0x76, 0xf2, 0xf3 } };   // Current resource state value (D3D12_RESOURCE_STATES ), sizeof(UINT), set on ID3D12Resource 
+AMF_WEAK GUID  AMFFenceGUID         = { 0x910a7928, 0x57bd, 0x4b04, { 0x91, 0xa3, 0xe7, 0xb8, 0x04, 0x12, 0xcd, 0xa5 } };   // IUnknown (ID3D12Fence), set on ID3D12Resource  syncronization fence for this resource
+AMF_WEAK GUID  AMFFenceValueGUID    = { 0x62a693d3, 0xbb4a, 0x46c9, { 0xa5, 0x04, 0x9a, 0x8e, 0x97, 0xbf, 0xf0, 0x56 } };   // The last value to wait on the fence from AMFFenceGUID; sizeof(UINT64), set on ID3D12Fence 
+#endif
 
-#define AMF_MAKE_FULL_VERSION(VERSION_MAJOR, VERSION_MINOR, VERSION_RELEASE, VERSION_BUILD_NUM)    ( ((amf_uint64)(VERSION_MAJOR) << 48ull) | ((amf_uint64)(VERSION_MINOR) << 32ull) | ((amf_uint64)(VERSION_RELEASE) << 16ull)  | (amf_uint64)(VERSION_BUILD_NUM))
-
-#define AMF_GET_MAJOR_VERSION(x)      ((x >> 48ull) & 0xFFFF)
-#define AMF_GET_MINOR_VERSION(x)      ((x >> 32ull) & 0xFFFF)
-#define AMF_GET_SUBMINOR_VERSION(x)   ((x >> 16ull) & 0xFFFF)
-#define AMF_GET_BUILD_VERSION(x)      ((x >>  0ull) & 0xFFFF)
-
-#define AMF_VERSION_MAJOR       1
-#define AMF_VERSION_MINOR       4
-#define AMF_VERSION_RELEASE     18
-#define AMF_VERSION_BUILD_NUM   0
-
-#define AMF_FULL_VERSION AMF_MAKE_FULL_VERSION(AMF_VERSION_MAJOR, AMF_VERSION_MINOR, AMF_VERSION_RELEASE, AMF_VERSION_BUILD_NUM)
-
-#endif //#ifndef AMF_Version_h
+#endif // __D3D12AMF_h__
